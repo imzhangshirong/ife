@@ -1,202 +1,210 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>ife task 9</title>
-        <link rel="stylesheet" type="text/css" href="index.css?t=1"/>
-    </head>
-    <body>
-        <div id="top">
-            <div id="logo">喵喵喵？</div>
-            <div style="float:right;margin-right:50px;">
-                 <div id="search">
-                    <input type="text">
+
+<head>
+    <meta charset="utf-8">
+    <title>ife task 9</title>
+    <link rel="stylesheet" type="text/css" href="index.css?t=2" />
+</head>
+
+<body>
+    <header id="top">
+        <div id="logo">喵喵喵？</div>
+        <div style="float:right;margin-right:50px;">
+            <div id="search">
+                <input type="text">
+            </div>
+            <div id="login">登录</div>
+        </div>
+    </header>
+    <div id="main">
+        <div id="menu">
+            <div id="menu-user">
+                <div id="menu-user-logo">
+                    <div id="menu-user-photo"><img width="100%" height="100%"></div>
+                    <div id="menu-user-name">Jarvis</div>
                 </div>
-                <div id="login">登录</div>
+                <div id="menu-user-info">
+                    <div class="info">110<br>收藏</div>
+                    <div class="info">313<br>粉丝</div>
+                </div>
+            </div>
+            <div id="menu-list" class="menu-list">
+                <div class="menu-root active">
+                    <span class="report"><i></i>个人报表</span>
+                    <ul>
+                        <li class="cluster"><span class="file"><i></i>文件1</span>
+                            <ul>
+                                <li><span class="doc"><i></i>文档1-1</span></li>
+                            </ul>
+                        </li>
+                        <li class="open"><span class="file"><i></i>文件2</span>
+                            <ul>
+                                <li><span class="doc"><i></i>文档2-1</span></li>
+                                <li><span class="doc"><i></i>文档2-2</span></li>
+                            </ul>
+                        </li>
+                        <li class="cluster"><span class="file"><i></i>文件3</span>
+                            <ul>
+                                <li><span class="doc"><i></i>文档3-1</span></li>
+                                <li><span> class="doc"<i></i>文档3-2</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-root">
+                    <span id="likes"><i></i>个人收藏</span>
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="menu-root">
+                    <span id="share"><i></i>我的分享</span>
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="menu-root">
+                    <span id="pictures"><i></i>图库</span>
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="menu-root">
+                    <span id="record"><i></i>成长记录</span>
+                    <ul>
+
+                    </ul>
+                </div>
+                <div class="menu-root">
+                    <span id="account"><i></i>账户信息</span>
+                    <ul>
+
+                    </ul>
+                </div>
             </div>
         </div>
-        <div id="main">
-            <div id="menu">
-                <div id="menu-user">
-                    <div id="menu-user-logo">
-                        <div id="menu-user-photo"><img width="100%" height="100%"></div>
-                        <div id="menu-user-name">Jarvis</div>
+        <div id="control">
+            <div id="path">C站 / 个人报表 / 文件一 / <span class="active">文档1</span></div>
+            <div id="content">
+                <section id="look-option" class="block">
+                    <div class="look-option spacing">
+                        <p><label class="label">查询项</label><select><option>第一项</option></select></p>
                     </div>
-                    <div id="menu-user-info">
-                        <div class="info">110<br>收藏</div>
-                        <div class="info">313<br>粉丝</div>                        
+                    <div class="look-option">
+                        <p><label class="label">买方</label><select id="lookup-option-buy"><option>小A</option><option>小B</option><option>小C</option></select></p>
+                        <p><label class="label">卖方</label><select id="lookup-option-sell"><option>小A</option><option>小B</option><option selected="selected">小C</option></select></p>
                     </div>
-                </div>
-                <div id="menu-list" class="menu-list">
-                    <div class="menu-root active">
-                        <span class="report"><i></i>个人报表</span>
-                        <ul>
-                            <li class="cluster"><span class="file"><i></i>文件1</span>
-                                <ul>
-                                    <li><span class="doc"><i></i>文档1-1</span></li>
-                               </ul>
-                            </li>
-                            <li class="open"><span class="file"><i></i>文件2</span>
-                                <ul>
-                                    <li><span class="doc"><i></i>文档2-1</span></li>
-                                    <li><span class="doc"><i></i>文档2-2</span></li>
-                                </ul>
-                            </li>
-                            <li class="cluster"><span class="file"><i></i>文件3</span>
-                                <ul>
-                                    <li><span class="doc"><i></i>文档3-1</span></li>
-                                    <li><span> class="doc"<i></i>文档3-2</span></li>
-                                </ul>
-                            </li>
-                        </ul>
+                    <div class="look-option exchange spacing">
+                        <div id="look-option-exchange">换</div>
                     </div>
-                    <div class="menu-root">
-                        <span id="likes"><i></i>个人收藏</span>
-                        <ul>
-                            
-                        </ul>
+                    <div class="look-option spacing">
+                        <p>
+                            <label class="label">日期</label><input type="date">
+                            <label class="label">总耗时</label><select id="lookup-option-spenttime"><option>1天</option><option>2天</option><option>3天</option></select>
+                        </p>
+                        <p>
+                            <label class="label">人数</label><select id="lookup-option-pnumber"><option>1人</option><option>2人</option><option>3人</option></select>
+                            <label class="label">成交项</label><select id="lookup-option-deal"><option>1项</option><option>2项</option><option>3项</option></select>
+                        </p>
                     </div>
-                    <div class="menu-root">
-                        <span id="share"><i></i>我的分享</span>
-                        <ul>
-                            
-                        </ul>
+                    <div class="look-option spacing">
+                        <button class="btn" id="lookup">搜索</button>
                     </div>
-                    <div class="menu-root">
-                        <span id="pictures"><i></i>图库</span>
-                        <ul>
-                            
-                        </ul>
-                    </div>
-                    <div class="menu-root">
-                        <span id="record"><i></i>成长记录</span>
-                        <ul>
-                            
-                        </ul>
-                    </div>
-                    <div class="menu-root">
-                        <span id="account"><i></i>账户信息</span>
-                        <ul>
-                            
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div id="control">
-                <div id="path">C站 / 个人报表 / 文件一 / <span class="active">文档1</span></div>
-                <div id="content">
-                    <div id="look-option" class="block section">
-                        <div class="look-option spacing">
-                            <p><span class="label">查询项</span><select><option>第一项</option></select></p>
+                </section>
+                <section id="balance">
+
+                    <div id="balance-all">
+                        <div id="balance-prev" class="block prev"></div>
+                        <div class="balance block active">
+                            <p class="time">10:00am</p>
+                            <p class="number">1200</p>
                         </div>
-                        <div class="look-option">
-                            <p><span class="label">买方</span><select id="lookup-option-buy"><option>小A</option><option>小B</option><option>小C</option></select></p>
-                            <p><span class="label">卖方</span><select id="lookup-option-sell"><option>小A</option><option>小B</option><option selected="selected">小C</option></select></p>
+                        <div class="balance block">
+                            <p class="time">11:00am</p>
+                            <p class="number">1300</p>
                         </div>
-                        <div class="look-option exchange spacing">
-                            <div id="look-option-exchange">换</div>
+                        <div class="balance block">
+                            <p class="time">12:00am</p>
+                            <p class="number">1500</p>
                         </div>
-                        <div class="look-option spacing">
-                            <p><span class="label">日期</span><input type="date"><span class="label">总耗时</span><select id="lookup-option-spenttime"><option>1天</option><option>2天</option><option>3天</option></select></p>
-                            <p><span class="label">人数</span><select id="lookup-option-pnumber"><option>1人</option><option>2人</option><option>3人</option></select><span class="label">成交项</span><select id="lookup-option-deal"><option>1项</option><option>2项</option><option>3项</option></select></p>
+                        <div class="balance block">
+                            <p class="time">13:00am</p>
+                            <p class="number">1400</p>
                         </div>
-                        <div class="look-option spacing">
-                            <button class="btn" id="lookup">搜索</button>
+                        <div class="balance block">
+                            <p class="time">14:00am</p>
+                            <p class="number">1700</p>
                         </div>
+                        <div class="balance block">
+                            <p class="time">15:00am</p>
+                            <p class="number">1600</p>
+                        </div>
+                        <div class="balance block">
+                            <p class="time">16:00am</p>
+                            <p class="number">1800</p>
+                        </div>
+                        <div class="balance block">
+                            <p class="time">16:00am</p>
+                            <p class="number">1800</p>
+                        </div>
+                        <div class="balance block">
+                            <p class="time">16:00am</p>
+                            <p class="number">1800</p>
+                        </div>
+                        <div class="balance block">
+                            <p class="time">16:00am</p>
+                            <p class="number">1800</p>
+                        </div>
+                        <div class="balance block">
+                            <p class="time">16:00am</p>
+                            <p class="number">1800</p>
+                        </div>
+                        <div id="balance-next" class="block next"></div>
                     </div>
-                    <div id="balance" class="section">
-                        
-                        <div id="balance-all">
-                            <div id="balance-prev" class="block prev"></div>
-                            <div class="balance block active">
-                                <p class="time">10:00am</p>
-                                <p class="number">1200</p>
+
+                    <div id="balance-history" class="block">历史查询</div>
+
+                </section>
+                <section id="count">
+                    <p>2016年4月份统计</p>
+                    <div class="table">
+                        <div class="card">
+                            <div class="info green">
+                                <p class="name">233333</p>
+                                <p class="type">成交量</p>
                             </div>
-                            <div class="balance block">
-                                <p class="time">11:00am</p>
-                                <p class="number">1300</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">12:00am</p>
-                                <p class="number">1500</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">13:00am</p>
-                                <p class="number">1400</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">14:00am</p>
-                                <p class="number">1700</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">15:00am</p>
-                                <p class="number">1600</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">16:00am</p>
-                                <p class="number">1800</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">16:00am</p>
-                                <p class="number">1800</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">16:00am</p>
-                                <p class="number">1800</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">16:00am</p>
-                                <p class="number">1800</p>
-                            </div>
-                            <div class="balance block">
-                                <p class="time">16:00am</p>
-                                <p class="number">1800</p>
-                            </div>
-                            <div id="balance-next"  class="block next"></div>
                         </div>
-                        
-                        <div id="balance-history"  class="block">历史查询</div>
-                        
-                    </div>
-                    <div id="count" class="section">
-                        <p>2016年4月份统计</p>
-                        <div class="table">
-                            <div class="card">
-                                <div class="info green">
-                                    <p class="name">233333</p>
-                                    <p class="type">成交量</p>
-                                </div>
+                        <div class="spacing"></div>
+                        <div class="card">
+                            <div class="info blue">
+                                <p class="name">233333</p>
+                                <p class="type">成交量</p>
                             </div>
-                            <div class="spacing"></div>
-                            <div class="card">
-                                <div class="info blue">
-                                    <p class="name">233333</p>
-                                    <p class="type">成交量</p>
-                                </div>
+                        </div>
+                        <div class="spacing"></div>
+                        <div class="card">
+                            <div class="info red">
+                                <p class="name">233333</p>
+                                <p class="type">成交量</p>
                             </div>
-                            <div class="spacing"></div>
-                            <div class="card">
-                                <div class="info red">
-                                    <p class="name">233333</p>
-                                    <p class="type">成交量</p>
-                                </div>
-                            </div>
-                            <div class="spacing"></div>
-                            <div class="card">
-                                <div class="info yellow">
-                                    <p class="name">233333</p>
-                                    <p class="type">成交量</p>
-                                </div>
+                        </div>
+                        <div class="spacing"></div>
+                        <div class="card">
+                            <div class="info yellow">
+                                <p class="name">233333</p>
+                                <p class="type">成交量</p>
                             </div>
                         </div>
                     </div>
-                    <div class="section objs">
-                        <div class="control-obj one">
-                            <p>第一组项目</p>
-                            <div class="control-body">
-                                <form class="selector" style="height: 300px;">
-                                    <input type="radio" id="s_page_1" name="label" checked="checked" />
-                                    <label for="s_page_1">
+                </section>
+                <section class="objs">
+                    <div class="control-obj one">
+                        <p>第一组项目</p>
+                        <div class="control-body">
+                            <form class="selector" style="height: 300px;">
+                                <input type="radio" id="s_page_1" name="label" checked="checked" />
+                                <label for="s_page_1">
                                         <p>项目一</p>
                                         <div class="content"><div>
                                             <table width="100%" class="table-buy" cellspacing="0">
@@ -208,8 +216,8 @@
                                             </table>
                                         </div></div>
                                     </label>
-                                    <input type="radio" id="s_page_2" name="label" />
-                                    <label for="s_page_2">
+                                <input type="radio" id="s_page_2" name="label" />
+                                <label for="s_page_2">
                                         <p>项目二</p>
                                         <div class="content"><div>
                                             <table width="100%" class="table-buy" cellspacing="0">
@@ -221,8 +229,8 @@
                                             </table>
                                         </div></div>
                                     </label>
-                                    <input type="radio" id="s_page_3" name="label" />
-                                    <label for="s_page_3">
+                                <input type="radio" id="s_page_3" name="label" />
+                                <label for="s_page_3">
                                         <p>项目三</p>
                                         <div class="content"><div>
                                             <table width="100%" class="table-buy" cellspacing="0">
@@ -235,37 +243,51 @@
                                             </table>
                                         </div></div>
                                     </label>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="spacing"></div>
-                        <div class="control-obj two">
-                            <p>第一组项目</p>
-                            <div class="control-body">
-                                <table width="100%" height="300px" class="table-report" cellspacing="0">
-                                    <tr>
-                                        <td colspan="2">
-                                            <p>标题</p><p>项目报表三</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%"><p>价格</p><p>￥158</p></td>
-                                        <td width="60%"><p>负责人</p><p>小A</p></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"><p>详细描述</p><div style="height:80px;">该项目的负责人是...</div></td>
-                                    </tr> 
-                                    <tr>
-                                        <td colspan="2"><label style="line-height: 24px;"><input type="checkbox" style="vertical-align: middle"/> 遵守保密协议</label><button class="btn" style="float:right">搜索</button></td>
-                                    </tr>                                 
-                                </table>
-                            </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="section objs">
-                        <div class="control-obj three">
-                            <p>日历</p>
-                            <div class="control-body"><div style="height:380px;">
+                    <div class="spacing"></div>
+                    <div class="control-obj two">
+                        <p>第一组项目</p>
+                        <div class="control-body">
+                            <table width="100%" height="300px" class="table-report" cellspacing="0">
+                                <tr>
+                                    <td colspan="2">
+                                        <p>标题</p>
+                                        <p>项目报表三</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">
+                                        <p>价格</p>
+                                        <p>￥158</p>
+                                    </td>
+                                    <td width="60%">
+                                        <p>负责人</p>
+                                        <p>小A</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <p>详细描述</p>
+                                        <div style="height:80px;">该项目的负责人是...</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><label style="line-height: 24px;"><input type="checkbox" style="vertical-align: middle"/> 遵守保密协议</label>
+                                        <button
+                                            class="btn" style="float:right">搜索</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <section class="objs">
+                    <div class="control-obj three">
+                        <p>日历</p>
+                        <div class="control-body">
+                            <div style="height:380px;">
                                 <p class="calendar-select">
                                     <select><option>2016年</option></select>
                                     <select>
@@ -286,127 +308,271 @@
                                     <button class="calendar-goback">返回今天</button>
                                 </p>
                                 <table class="calendar" width="100%" cellspacing="0">
-                                    <tr><td>一</td><td>二</td><td>三</td><td>四</td><td>五</td><td>六</td><td>日</td></tr>
-                                    <tr><td></td><td></td><td></td><td></td><td><p>1</p><p class="holiday">愚人节</p></td><td><p>2</p><p>廿五</p></td><td><p>3</p><p>廿六</p></td></tr>
-                                    <tr><td><p>4</p><p>廿七</p></td><td><p>5</p><p class="holiday">清明</p></td><td><p>6</p><p>廿九</p></td><td><p>7</p><p>三月</p></td><td><p>8</p><p>初一</p></td><td><p>9</p><p>初二</p></td><td><p>10</p><p>初三</p></td></tr>
-                                    <tr><td><p>11</p><p>初四</p></td><td><p>12</p><p>初五</p></td><td><p>13</p><p>初六</p></td><td><p>14</p><p>初七</p></td><td><p>15</p><p>初八</p></td><td><p>16</p><p>初九</p></td><td><p>17</p><p>初十</p></td></tr>
-                                    <tr><td><p>18</p><p>十一</p></td><td><p>19</p><p>十二</p></td><td><p>20</p><p>十三</p></td><td><p>21</p><p>十四</p></td><td><p>22</p><p>十五</p></td><td><p>23</p><p>十六</p></td><td><p>24</p><p>十七</p></td></tr>
-                                    <tr><td><p>25</p><p>十八</p></td><td><p>26</p><p>十九</p></td><td><p>27</p><p>廿一</p></td><td><p>28</p><p>廿二</p></td><td><p>29</p><p>廿三</p></td><td><p>30</p><p>廿四</p></td><td></td></tr>
-                                </table>
-                            </div></div>
-                        </div>
-                        <div class="spacing"></div>
-                        <div class="control-obj four">
-                            <p>汽车行业品牌榜</p>
-                            <div class="control-body">
-                                <table width="100%" height="380px" class="table-car" cellspacing="0">
-                                    <tr><th>排名</th><th>品牌</th><th colspan="2">搜索指数</th></tr>
                                     <tr>
-                                        <td>1</td>
-                                        <td>大众</td>
-                                        <td><span>48912001</span></td>
+                                        <td>一</td>
+                                        <td>二</td>
+                                        <td>三</td>
+                                        <td>四</td>
+                                        <td>五</td>
+                                        <td>六</td>
+                                        <td>日</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:85%"></span>
-                                            </div>
+                                            <p>1</p>
+                                            <p class="holiday">愚人节</p>
+                                        </td>
+                                        <td>
+                                            <p>2</p>
+                                            <p>廿五</p>
+                                        </td>
+                                        <td>
+                                            <p>3</p>
+                                            <p>廿六</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>2</td>
-                                        <td>丰田</td>
-                                        <td><span>29307333</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:75%"></span>
-                                            </div>
+                                            <p>4</p>
+                                            <p>廿七</p>
+                                        </td>
+                                        <td>
+                                            <p>5</p>
+                                            <p class="holiday">清明</p>
+                                        </td>
+                                        <td>
+                                            <p>6</p>
+                                            <p>廿九</p>
+                                        </td>
+                                        <td>
+                                            <p>7</p>
+                                            <p>三月</p>
+                                        </td>
+                                        <td>
+                                            <p>8</p>
+                                            <p>初一</p>
+                                        </td>
+                                        <td>
+                                            <p>9</p>
+                                            <p>初二</p>
+                                        </td>
+                                        <td>
+                                            <p>10</p>
+                                            <p>初三</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>3</td>
-                                        <td>奥迪</td>
-                                        <td><span>23139070</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:70%"></span>
-                                            </div>
+                                            <p>11</p>
+                                            <p>初四</p>
+                                        </td>
+                                        <td>
+                                            <p>12</p>
+                                            <p>初五</p>
+                                        </td>
+                                        <td>
+                                            <p>13</p>
+                                            <p>初六</p>
+                                        </td>
+                                        <td>
+                                            <p>14</p>
+                                            <p>初七</p>
+                                        </td>
+                                        <td>
+                                            <p>15</p>
+                                            <p>初八</p>
+                                        </td>
+                                        <td>
+                                            <p>16</p>
+                                            <p>初九</p>
+                                        </td>
+                                        <td>
+                                            <p>17</p>
+                                            <p>初十</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>4</td>
-                                        <td>本田</td>
-                                        <td><span>22885564</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:65%"></span>
-                                            </div>
+                                            <p>18</p>
+                                            <p>十一</p>
+                                        </td>
+                                        <td>
+                                            <p>19</p>
+                                            <p>十二</p>
+                                        </td>
+                                        <td>
+                                            <p>20</p>
+                                            <p>十三</p>
+                                        </td>
+                                        <td>
+                                            <p>21</p>
+                                            <p>十四</p>
+                                        </td>
+                                        <td>
+                                            <p>22</p>
+                                            <p>十五</p>
+                                        </td>
+                                        <td>
+                                            <p>23</p>
+                                            <p>十六</p>
+                                        </td>
+                                        <td>
+                                            <p>24</p>
+                                            <p>十七</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>5</td>
-                                        <td>福特</td>
-                                        <td><span>22324792</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:60%"></span>
-                                            </div>
+                                            <p>25</p>
+                                            <p>十八</p>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>宝马</td>
-                                        <td><span>21444077</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:55%"></span>
-                                            </div>
+                                            <p>26</p>
+                                            <p>十九</p>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>现代</td>
-                                        <td><span>20114969</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:50%"></span>
-                                            </div>
+                                            <p>27</p>
+                                            <p>廿一</p>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>起亚</td>
-                                        <td><span>19251680</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:45%"></span>
-                                            </div>
+                                            <p>28</p>
+                                            <p>廿二</p>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>奔驰</td>
-                                        <td><span>19172837</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:40%"></span>
-                                            </div>
+                                            <p>29</p>
+                                            <p>廿三</p>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>别克</td>
-                                        <td><span>18544027</span></td>
                                         <td>
-                                            <div class="progress">
-                                                <span style="width:35%"></span>
-                                            </div>
+                                            <p>30</p>
+                                            <p>廿四</p>
                                         </td>
+                                        <td></td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="spacing"></div>
+                    <div class="control-obj four">
+                        <p>汽车行业品牌榜</p>
+                        <div class="control-body">
+                            <table width="100%" height="380px" class="table-car" cellspacing="0">
+                                <tr>
+                                    <th>排名</th>
+                                    <th>品牌</th>
+                                    <th colspan="2">搜索指数</th>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>大众</td>
+                                    <td><span>48912001</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:85%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>丰田</td>
+                                    <td><span>29307333</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:75%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>奥迪</td>
+                                    <td><span>23139070</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:70%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>本田</td>
+                                    <td><span>22885564</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:65%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>福特</td>
+                                    <td><span>22324792</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:60%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>宝马</td>
+                                    <td><span>21444077</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:55%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>现代</td>
+                                    <td><span>20114969</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:50%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>起亚</td>
+                                    <td><span>19251680</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:45%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>奔驰</td>
+                                    <td><span>19172837</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:40%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>别克</td>
+                                    <td><span>18544027</span></td>
+                                    <td>
+                                        <div class="progress">
+                                            <span style="width:35%"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

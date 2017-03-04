@@ -520,7 +520,7 @@ select,input[type='date']{
     position: relative;
     color: #FFF;
 }
-.section{
+section{
     overflow: hidden;
     margin-bottom: 20px;
 }

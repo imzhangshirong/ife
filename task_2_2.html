@@ -36,12 +36,14 @@
                 temp=aqiData[a];//如果想对数据进行修改，同时保留原始数据：aqiData[a].concat();
                 if(temp[1]>60){
                     var b=0;
+                    //排序过程///
                     for(b=0;b<newData.length;b++){
                         if(newData[b][1]<=temp[1])break;
                     }
                     for(var c=newData.length;c>b;c--){
                         newData[c]=newData[c-1];
                     }
+                    ///////////
                     newData[b]=temp;
                 }
             }

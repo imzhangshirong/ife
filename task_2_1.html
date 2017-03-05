@@ -17,10 +17,13 @@
     var inputElement=document.getElementById("aqi-input");
     var buttonElement=document.getElementById("button");
     var displayElement=document.getElementById("aqi-display");
-    buttonElement.addEventListener("click",function(){
+    var clickFunc=function(){
         var data=inputElement.value;
         displayElement.innerText=data;//不使用innerHTML，避免嵌入html或js代码
-    });
+    };
+    buttonElement.onclick=clickFunc;
+    //buttonElement.addEventListener("click",clickFunc);
+    //if(buttonElement.attachEvent)buttonElement.attachEvent("onclick",clickFunc); ie
 })();//立即执行，不造成污染
 
 </script>

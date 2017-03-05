@@ -31,6 +31,19 @@
             */
             var listElement=document.getElementById("aqi-list");
             var newData=[];
+            
+            aqiData.sort(function(a,b){
+                return b[1]-a[1];
+            });
+            for(var a=0;a<aqiData.length;a++){
+                temp=aqiData[a];//如果想对数据进行修改，同时保留原始数据：aqiData[a].concat();
+                if(temp[1]>60){
+                    newData[newData.length]=temp;
+                }
+            }
+
+
+            /*2法
             var temp;
             for(var a=0;a<aqiData.length;a++){
                 temp=aqiData[a];//如果想对数据进行修改，同时保留原始数据：aqiData[a].concat();
@@ -47,6 +60,9 @@
                     newData[b]=temp;
                 }
             }
+            */
+
+
             var listHtml="";
             for(var a=0;a<newData.length;a++){
                 listHtml+="<li>第"+(a+1)+"名："+newData[a][0]+"，"+newData[a][1]+"</li>";

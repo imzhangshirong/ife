@@ -13,7 +13,7 @@
         </style>
     </head>
     <body>
-        <p><input type="number" id="input"/><button id="left_in">左侧入</button><button id="right_in">右侧入</button> <button id="left_out">左侧出</button><button id="right_out">右侧出</button></p>
+        <p><input type="text" id="input"/><!--也可以用number来限制--><button id="left_in">左侧入</button><button id="right_in">右侧入</button> <button id="left_out">左侧出</button><button id="right_out">右侧出</button></p>
         <p id="show"></p>
         <script>
             var inputElement=document.getElementById("input");
@@ -71,19 +71,26 @@
                 addShow(num,false);
                 console.log(line);
             }
+            function checkIsNumber(data){//检测是否合法
+                if(isNaN(Number(data))){
+                    alert("输入不合法，必须为数字");
+                    return false;
+                }
+                return true;
+            }
             function init(){
                 //绑定事件
                 leftInButton.addEventListener("click",function(){
-                    leftIn(Number(inputElement.value));
+                    if(checkIsNumber(inputElement.value))leftIn(Number(inputElement.value));
                 });
                 leftOutButton.addEventListener("click",function(){
-                    leftOut(Number(inputElement.value));
+                    if(checkIsNumber(inputElement.value))leftOut(Number(inputElement.value));
                 });
                 rightInButton.addEventListener("click",function(){
-                    rightIn(Number(inputElement.value));
+                    if(checkIsNumber(inputElement.value))rightIn(Number(inputElement.value));
                 });
                 rightOutButton.addEventListener("click",function(){
-                    rightOut(Number(inputElement.value));
+                    if(checkIsNumber(inputElement.value))rightOut(Number(inputElement.value));
                 });
             }
             init();

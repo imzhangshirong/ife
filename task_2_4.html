@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IFE JavaScript Task 2_4</title>
+        <style>
+            span{
+                padding: 10px;
+                background-color: red;
+                color: white;
+                margin:5px;
+            }
+        </style>
+    </head>
+    <body>
+        <p><input type="number" id="input"/><button id="left_in">左侧入</button><button id="right_in">右侧入</button> <button id="left_out">左侧出</button><button id="right_out">右侧出</button></p>
+        <p id="show"></p>
+        <script>
+            var inputElement=document.getElementById("input");
+            var showElement=document.getElementById("show");
+            var leftInButton=document.getElementById("left_in");
+            var rightInButton=document.getElementById("right_in");
+            var leftOutButton=document.getElementById("left_out");
+            var rightOutButton=document.getElementById("right_out");
+            var line=[];
+            var click=function(){
+                var a;
+                for(a=0;a<showElement.children.length;a++){
+                    if(this==showElement.children[a])break;//找到指定的元素
+                }
+                alert(line[a]);
+                line=line.filter(function(num,index){
+                    if(index==a)return false;//删除对应的成员
+                    return true;
+                });
+                console.log(line);
+                this.remove();
+            }
+            function addShow(num,left){
+                var span=document.createElement("span");
+                span.innerText=num;
+                span.addEventListener("click",click);
+                if(left){//左入
+                    showElement.insertBefore(span,showElement.children[0]);
+                }
+                else{//右入
+                    showElement.appendChild(span);
+                }
+            }
+            function leftOut(num){
+                if(line.length==0){
+                    alert("列队为空");
+                    return;
+                }
+                click.call(showElement.children[0]);//将对应的元素传给click
+            }
+            function leftIn(num){
+                line.unshift(num);
+                addShow(num,true);
+                console.log(line);
+            }
+            function rightOut(num){
+                if(line.length==0){
+                    alert("列队为空");
+                    return;
+                }
+                click.call(showElement.children[showElement.children.length-1]);//将对应的元素传给click
+            }
+            function rightIn(num){
+                line.push(num);
+                addShow(num,false);
+                console.log(line);
+            }
+            function init(){
+                //绑定事件
+                leftInButton.addEventListener("click",function(){
+                    leftIn(Number(inputElement.value));
+                });
+                leftOutButton.addEventListener("click",function(){
+                    leftOut(Number(inputElement.value));
+                });
+                rightInButton.addEventListener("click",function(){
+                    rightIn(Number(inputElement.value));
+                });
+                rightOutButton.addEventListener("click",function(){
+                    rightOut(Number(inputElement.value));
+                });
+            }
+            init();
+        </script>
+    </body>
+
+</html>

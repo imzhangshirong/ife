@@ -1,0 +1,141 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 2_3</title>
+</head>
+
+<body>
+
+    <ul id="source">
+        <li>北京空气质量：<b>90</b></li>
+        <li>上海空气质量：<b>70</b></li>
+        <li>天津空气质量：<b>80</b></li>
+        <li>广州空气质量：<b>50</b></li>
+        <li>深圳空气质量：<b>40</b></li>
+        <li>福州空气质量：<b>32</b></li>
+        <li>成都空气质量：<b>90</b></li>
+    </ul>
+
+    <ul id="resort">
+        <!-- 
+    <li>第一名：北京空气质量：<b>90</b></li>
+    <li>第二名：北京空气质量：<b>90</b></li>
+    <li>第三名：北京空气质量：<b>90</b></li>
+     -->
+
+    </ul>
+
+    <button id="sort-btn">排序</button>
+
+    <script type="text/javascript">
+        //数字转为中文
+        function getChineseNum(num) {
+            var units = ["", "十", "百", "千", "万", "十", "百", "千", "亿", "十", "百", "千", "万"];
+            var cnum = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+            var h = 0;
+            var unitBase = 10;
+            var a = Math.floor(num / unitBase);
+            var b = num % unitBase;
+            var string = "";
+            var backZeroNum = (b > 0) ? 0 : 1;
+            var backZero = (b > 0) ? false : true;
+            var zero = false;
+            while (a > 0) {
+                var nextB = a % unitBase;
+                h++;
+                if (b > 0) {
+                    if (zero) {
+                        string = units[h - 1] + string;
+                        zero = false;
+                    }
+                    string = ((nextB > 0) ? units[h] : "") + cnum[b] + string;
+                    if (a > unitBase) backZero = false;
+                }
+                else if (backZero) {
+                    backZeroNum++;
+                }
+                else if (!zero) {
+                    string = cnum[b] + string;
+                    backZero = false;
+                    zero = true;
+                }
+                b = nextB;
+                a = Math.floor(a / unitBase);
+            }
+            string = cnum[b] + ((zero) ? units[h] : "") + string;
+            if (backZeroNum > 0) string += units[backZeroNum - 1];
+            return string;
+        }
+        //////
+        /**
+        * getData方法
+        * 读取id为source的列表，获取其中城市名字及城市对应的空气质量
+        * 返回一个数组，格式见函数中示例
+        */
+        function getData() {
+            var sourceElement=document.getElementById("source");
+            var liElements=sourceElement.getElementsByTagName("li");
+            var data=[];
+            for(var a=0;a<liElements.length;a++){
+                var html=liElements[a].innerHTML;
+                var temp=html.match(/(\S+)空气质量：<b>(\d+)<\/b>/);//正则匹配
+                data[data.length]=[temp[1],temp[2]];
+
+                /*或者
+                var name=liElements[a].childNodes[0].textContent;
+                name=name.substr(0,name.length-5);
+                var score=liElements[a].childNodes[1].textContent;
+                data[data.length]=[name,score];
+                */
+                
+            }
+            return data;
+        }
+
+        /**
+         * sortAqiData
+         * 按空气质量对data进行从小到大的排序
+         * 返回一个排序后的数组
+         */
+        function sortAqiData(data) {
+            //复制数组后，排序，返回
+            return data.concat().sort(
+                function(a,b){
+                    return a[1]-b[1];
+                });
+        }
+        /**
+         * render
+         * 将排好序的城市及空气质量指数，输出显示到id位resort的列表中
+         * 格式见ul中的注释的部分
+         */
+        function render(data) {
+            var resortElement=document.getElementById("resort");
+            var html="";
+            for(var a=0;a<data.length;a++){
+                html+="<li>第"+getChineseNum(a+1)+"名："+data[a][0]+"空气质量：<b>"+data[a][1]+"</b></li>";
+            }
+            resortElement.innerHTML=html;
+        }
+
+        function btnHandle() {
+            var aqiData = getData();
+            aqiData = sortAqiData(aqiData);
+            render(aqiData);
+        }
+
+        function init() {
+            // 在这下面给sort-btn绑定一个点击事件，点击时触发btnHandle函数
+            document.getElementById("sort-btn").onclick=function(){
+                btnHandle();
+            }
+
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

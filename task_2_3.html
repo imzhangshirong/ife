@@ -77,20 +77,18 @@
         function getData() {
             var sourceElement=document.getElementById("source");
             var liElements=sourceElement.getElementsByTagName("li");
-            var data=[];
-            for(var a=0;a<liElements.length;a++){
-                var html=liElements[a].innerHTML;
+            var data=[].map.call(liElements,function(li){
+                var html=li.innerHTML;
                 var temp=html.match(/(\S+)空气质量：<b>(\d+)<\/b>/);//正则匹配
-                data[data.length]=[temp[1],temp[2]];
+                return [temp[1],temp[2]];
 
                 /*或者
-                var name=liElements[a].childNodes[0].textContent;
+                var name=li.childNodes[0].textContent;
                 name=name.substr(0,name.length-5);
-                var score=liElements[a].childNodes[1].textContent;
-                data[data.length]=[name,score];
+                var score=li.childNodes[1].textContent;
+                return [name,score];
                 */
-                
-            }
+            });
             return data;
         }
 
@@ -100,8 +98,7 @@
          * 返回一个排序后的数组
          */
         function sortAqiData(data) {
-            //复制数组后，排序，返回
-            return data.concat().sort(
+            return data.sort(
                 function(a,b){
                     return a[1]-b[1];
                 });
@@ -128,9 +125,9 @@
 
         function init() {
             // 在这下面给sort-btn绑定一个点击事件，点击时触发btnHandle函数
-            document.getElementById("sort-btn").onclick=function(){
+            document.getElementById("sort-btn").addEventListener("click",function(){
                 btnHandle();
-            }
+            })
 
         }
 

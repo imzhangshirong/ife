@@ -43,7 +43,7 @@
             }
 
 
-            /*2法
+            /*或者
             var temp;
             for(var a=0;a<aqiData.length;a++){
                 temp=aqiData[a];//如果想对数据进行修改，同时保留原始数据：aqiData[a].concat();
@@ -68,6 +68,14 @@
                 listHtml+="<li>第"+(a+1)+"名："+newData[a][0]+"，"+newData[a][1]+"</li>";
             }
             listElement.innerHTML=listHtml;//一次添加，防止重复渲染
+
+            /*或者
+            for(var a=0;a<newData.length;a++){
+                var li=document.createElement("li");
+                li.innerText="第"+(a+1)+"名："+newData[a][0]+"，"+newData[a][1];
+                listElement.appendChild(li);
+            }
+            */
         })();
 
     </script>

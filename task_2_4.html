@@ -86,13 +86,13 @@
                     if(checkIsNumber(inputElement.value))leftIn(Number(inputElement.value));
                 });
                 leftOutButton.addEventListener("click",function(){
-                    if(checkIsNumber(inputElement.value))leftOut(Number(inputElement.value));
+                    leftOut(Number(inputElement.value));
                 });
                 rightInButton.addEventListener("click",function(){
                     if(checkIsNumber(inputElement.value))rightIn(Number(inputElement.value));
                 });
                 rightOutButton.addEventListener("click",function(){
-                    if(checkIsNumber(inputElement.value))rightOut(Number(inputElement.value));
+                    rightOut(Number(inputElement.value));
                 });
             }
             init();

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IFE JavaScript Task 2_5</title>
+        <style>
+            .bar{
+                background-color: gray;
+                display: inline-block;
+                margin-left:5px;
+                width: 20px;
+                height: 1px;
+            }
+            .bar.active{
+                background-color: red;
+            }
+            .bar.success{
+                background-color: green;
+            }
+            #show{
+                position: absolute;
+                vertical-align: bottom;
+                bottom:0px;
+            }
+            #sort_show_c{
+                position: relative;
+                height: 200px;
+            }
+        </style>
+    </head>
+    <body>
+        <p><input type="text" id="input"/><!--也可以用number来限制--><button id="left_in">左侧入</button><button id="right_in">右侧入</button> <button id="left_out">左侧出</button><button id="right_out">右侧出</button> <button id="sort">排序</button></p>
+        <section id="sort_show_c"> <div id="show"></div></section>
+        <script>
+            var inputElement=document.getElementById("input");
+            var showElement=document.getElementById("show");
+            var leftInButton=document.getElementById("left_in");
+            var rightInButton=document.getElementById("right_in");
+            var leftOutButton=document.getElementById("left_out");
+            var rightOutButton=document.getElementById("right_out");
+            var sortButton=document.getElementById("sort");
+            var line=[];
+            var click=function(){
+                var a;
+                for(a=0;a<showElement.children.length;a++){
+                    if(this==showElement.children[a])break;//找到指定的元素
+                }
+                alert(line[a]);
+                line.splice(a,1);
+                console.log(line);
+                this.remove();
+            }
+            function addShow(num,left){
+                var span=document.createElement("span");
+                span.className="bar";
+                span.style.height=num+"px";
+                span.addEventListener("click",click);
+                if(left){//左入
+                    showElement.insertBefore(span,showElement.children[0]);
+                }
+                else{//右入
+                    showElement.appendChild(span);
+                }
+                resetBar();//重置样式
+            }
+            function leftOut(num){
+                if(line.length==0){
+                    alert("列队为空");
+                    return;
+                }
+                click.call(showElement.children[0]);//将对应的元素传给click
+            }
+            function leftIn(num){
+                line.unshift(num);
+                addShow(num,true);
+                console.log(line);
+            }
+            function rightOut(num){
+                if(line.length==0){
+                    alert("列队为空");
+                    return;
+                }
+                click.call(showElement.children[showElement.children.length-1]);//将对应的元素传给click
+            }
+            function rightIn(num){
+                line.push(num);
+                addShow(num,false);
+                console.log(line);
+            }
+            function check(data){//检测是否合法
+                var num=Number(data);
+                if(isNaN(num) || num<10 || num>100){
+                    alert("输入不合法，必须为10-100内的数字");
+                    return false;
+                }
+                else if(line.length>=60){
+                    alert("列队已达到60个上限");
+                    return false;
+                }
+                return true;
+            }
+            function init(){
+                //绑定事件
+                leftInButton.addEventListener("click",function(){
+                    if(check(inputElement.value))leftIn(Number(inputElement.value));
+                });
+                leftOutButton.addEventListener("click",function(){
+                    leftOut(Number(inputElement.value));
+                });
+                rightInButton.addEventListener("click",function(){
+                    if(check(inputElement.value))rightIn(Number(inputElement.value));
+                });
+                rightOutButton.addEventListener("click",function(){
+                    rightOut(Number(inputElement.value));
+                });
+                sortButton.addEventListener("click",function(){
+                    sortProcessing(line);
+                });
+            }
+            function resetBar(){
+                Array.prototype.forEach.call(showElement.children,function(bar){
+                    bar.className="bar";
+                });
+            }
+            function setBarComplete(){
+                Array.prototype.forEach.call(showElement.children,function(bar){
+                    bar.classList.remove("active");
+                    bar.classList.add("success");
+                });
+            }
+            function exchageChildNode(target,a,b){//交换target第a和第b个元素
+                var c=(a>b)?b:a;
+                var d=(a<b)?b:a;
+                var eleA=target.childNodes[c];
+                var eleB=target.childNodes[d];
+                target.replaceChild(eleB,eleA);
+                target.insertBefore(eleA,target.childNodes[d]);
+            }
+            function sortProcessing(data){
+                //冒泡排序
+                var c=0;
+                var timeout=400;
+                for(var a=0;a<data.length;a++){
+                    for(var b=0;b<data.length-a-1;b++){
+                        if(data[b]>data[b+1]){
+                            var temp=data[b+1];
+                            data[b+1]=data[b];
+                            data[b]=temp;
+                            //动画演示////
+                            (function(a,b,c){
+                                setTimeout(function(){
+                                    resetBar();
+                                    showElement.children[a].classList.add("active");
+                                    showElement.children[b].classList.add("active");
+                                    exchageChildNode(showElement,a,b);
+                                },c*timeout);
+                            })(b,b+1,c);
+                            ////////////
+                            c++;
+                        }
+                    }
+                }
+                setTimeout(function(){setBarComplete();},c*timeout);//排序完成效果
+            }
+            init();
+        </script>
+    </body>
+
+</html>

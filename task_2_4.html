@@ -29,10 +29,12 @@
                     if(this==showElement.children[a])break;//找到指定的元素
                 }
                 alert(line[a]);
-                line=line.filter(function(num,index){
+                line.splice(a,1);//删除
+                /*line=line.filter(function(num,index){
                     if(index==a)return false;//删除对应的成员
                     return true;
                 });
+                */
                 console.log(line);
                 this.remove();
             }

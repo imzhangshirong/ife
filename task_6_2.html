@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IFE Task 6_2</title>
+    </head>
+    <body>
+        <script>
+            function Observer(obj){
+                this.data=obj;
+                if(isObject(this.data)){
+                    mapKey(this.data);
+                }
+                function isObject(object){//判断是否是原始对象
+                    if(object instanceof Object){
+                        if(object.toString()==="[object Object]")return true;
+                    }
+                    return false;
+                }
+                function mapKey(object){
+                    var keys=Object.keys(object);
+                    for(var a=0;a<keys.length;a++){
+                        if(object.hasOwnProperty(keys[a])){//避免沿着原型链查找
+                            if(isObject(object[keys[a]])){//是原始对象，继续遍历
+                                mapKey(object[keys[a]]);
+                            }
+                            else{//不是，则重新定义set和get
+                                defineKey(object,keys[a]);
+                            }
+                        }
+                    }
+                }
+                function defineKey(object,key){
+                    var value=object[key];
+                    Object.defineProperty(object,key,{
+                        set:function(newValue){
+                            console.log("修改‘"+key+"'："+value+" => "+newValue);
+                            if (newValue === value) return;
+                            value = newValue;
+                        },
+                        get:function(){
+                            console.log("访问'"+key+"'："+value);
+                            return value;
+                        }
+                    });
+                }
+            }
+            var obj={"a":1,"b":[1,2],"c":{"a2":2,"b2":new Date()}};
+            var observer=new Observer(obj);
+            console.log(obj);
+            console.log(observer);
+        </script>
+    </body>
+
+</html>

@@ -34,12 +34,12 @@
                     var value=object[key];
                     Object.defineProperty(object,key,{
                         set:function(newValue){
-                            console.log("修改‘"+key+"'："+value+" => "+newValue);
+                            console.log("你设置了‘"+key+"'，旧值为 "+value+" ，新值为 "+newValue);
                             if (newValue === value) return;
                             value = newValue;
                         },
                         get:function(){
-                            console.log("访问'"+key+"'："+value);
+                            console.log("你访问了 ’"+key+"'，值为 "+value);
                             return value;
                         }
                     });

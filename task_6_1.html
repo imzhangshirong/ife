@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IFE Task 6_1</title>
+        <style>
+            *{
+                margin:0px auto;
+                padding: 0px;
+            }
+            .container{
+                width: 500px;
+                height: 250px;
+                position: relative;
+                
+            }
+            .container:hover .background{
+                filter: blur(10px);
+            }
+            .container:hover .show::before{
+                opacity: 1;
+                height: 100%;
+                top:0px;
+            }
+            .container:hover .show::after{
+                opacity: 1;
+                width: 100%;
+                left:0px;
+            }
+            .container:hover .show .text_rainbow{
+                opacity: 1;
+                animation: flow_rainbow 3s linear infinite;
+            }
+            .container:hover .show .text_join{
+                opacity: 1;
+                animation: flow_join 3s linear infinite;
+            }
+
+            /*流光joinw*/
+            @-o-keyframes flow_join{
+                0%{
+                    background-position-y: 0%;
+                }join
+                100%{
+                    background-position-y: 100%;
+                }
+            }
+            @-moz-keyframes flow_join{
+                0%{
+                    background-position-y: 0%;
+                }
+                100%{
+                    background-position-y: 100%;
+                }
+            }
+            @-webkit-keyframes flow_join{
+                0%{
+                    background-position-y: 0%;
+                }
+                100%{
+                    background-position-y: 100%;
+                }
+            }
+            @keyframes flow_join{
+                0%{
+                    background-position-y: 0%;
+                }
+                100%{
+                    background-position-y: 100%;
+                }
+            }
+
+            /*流光rainbow*/
+            @-o-keyframes flow_rainbow{
+                0%{
+                    background-position-x: 0%;
+                }
+                100%{
+                    background-position-x: 100%;
+                }
+            }
+            @-moz-keyframes flow_rainbow{
+                0%{
+                    background-position-x: 0%;
+                }
+                100%{
+                    background-position-x: 100%;
+                }
+            }
+            @-webkit-keyframes flow_rainbow{
+                0%{
+                    background-position-x: 0%;
+                }
+                100%{
+                    background-position-x: 100%;
+                }
+            }
+            @keyframes flow_rainbow{
+                0%{
+                    background-position-x: 0%;
+                }
+                100%{
+                    background-position-x: 100%;
+                }
+            }
+            .background{
+                width: 100%;
+                height: 100%;
+                transition:all 1s;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-image: url('http://imgsrc.baidu.com/forum/w%3D580/sign=ca1ed79ed5160924dc25a213e405359b/6aa94f510fb30f243e445ccbcd95d143ac4b0338.jpg');
+            }
+            .show{
+                position: absolute;
+                width: 80%;
+                height: 60%;
+                top:20%;
+                left:10%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+            }
+            /*左右边框*/
+            .show::before{
+                content:"";
+                border-left:3px solid white;
+                border-right:3px solid white;
+                box-sizing: border-box;
+                display: block;
+                position: absolute;
+                left:0px;
+                top:50%;
+                width: 100%;
+                height: 0%;
+                transition:all 1s;
+                opacity: 0;
+                pointer-events: none;/*防止遮挡鼠标*/
+            }
+            /*上下边框*/
+            .show::after{
+                content:"";
+                border-top:3px solid white;
+                border-bottom:3px solid white;
+                box-sizing: border-box;
+                display: block;
+                position: absolute;
+                left:50%;
+                top:0px;
+                width: 0%;
+                height: 100%;
+                transition:all 1s;
+                opacity: 0;
+                pointer-events: none;/*防止遮挡鼠标*/
+            }
+            .text_rainbow{
+                text-align: center;
+                font-size: 22px;
+                padding-top: 20px;
+                background-clip: text;
+                -webkit-background-clip: text;
+                background-image: -webkit-linear-gradient(left,#f33b4c,#3baff3,#f33b4c,#3baff3,#f33b4c);
+                background-image: -moz-linear-gradient(left,#f33b4c,#3baff3,#f33b4c,#3baff3,#f33b4c);
+                background-image: -o-linear-gradient(left,#f33b4c,#3baff3,#f33b4c,#3baff3,#f33b4c);
+                background-image: linear-gradient(to left,#f33b4c,#3baff3,#f33b4c,#3baff3,#f33b4c);                
+                background-size: 200%;
+                background-position-x: 0%;
+                color: transparent;
+                transition:all 1s;
+                opacity: 0;
+            }
+            .text_join{
+                text-align: center;
+                font-size: 16px;
+                padding-bottom: 20px;
+                background-clip: text;
+                -webkit-background-clip: text;
+                background-image: -webkit-linear-gradient(top,#2dca48,#3baff3,#2dca48,#3baff3,#2dca48);
+                background-image: -moz-linear-gradient(top,#2dca48,#3baff3,#2dca48,#3baff3,#2dca48);
+                background-image: -o-linear-gradient(top,#2dca48,#3baff3,#2dca48,#3baff3,#2dca48);
+                background-image: linear-gradient(to top,#2dca48,#3baff3,#2dca48,#3baff3,#2dca48);
+                background-size: 200%;
+                background-position-y: 0%;
+                color: transparent;
+                transition:all 1s;
+                opacity: 0;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="background"></div>
+            <div class="show">
+                <div class="text_rainbow">欢迎参加百度前端技术学院</div>
+                <div class="text_join">点击报名</div>
+            </div>
+        </div>
+    </body>
+
+</html>

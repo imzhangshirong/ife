@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IFE Task 6_6</title>
+    </head>
+    <body>
+        <h3>对DOM的修改可以通过F2 Elements看出来，本例实现了只更新修改变量对应的dom，也支持手动更新所有的</h3>
+        <div id="app">
+            <p>姓名：{{user.name}}</p>
+            <p>年龄：{{user.age}}</p>
+            <button id="changeName">改变名字</button>
+            <button id="changeAge">改变年龄</button>
+            <button id="changeSchool">改变学校</button>
+            <button id="changeMajor">改变专业</button>
+            <button id="update">重新更新姓名和年龄</button>
+        </div>
+        <script>
+            function Vue(obj,bindElement){//obj数据对象，父元素绑定
+                this.data=obj;
+                if(isObject(this.data)){
+                    mapDomNode(this.data,bindElement);
+                    mapKey(this.data);
+                }
+                this.target=bindElement;
+                forbidKey(this,"target");
+                //支持传入自定义的get和set输出,isDeep为true的话，其下所有的变量变化都会传递事件
+                this.$watch=function(key,funcGet,funcSet,isDeep){
+                    if(isObject(this.data[key])){
+                        //为对象注册事件
+                        this.data[key].observerEvent={
+                            set:funcSet,
+                            get:funcGet
+                        };
+                        forbidKey(this.data[key],"observerEvent");
+                        if(isDeep)mapKeyNode(this.data[key]);//注册多层传递
+                    }
+                    else{
+                        defineKey(this.data,key,funcGet,funcSet);
+                    }
+                }
+                this.updateView=function(){//更新所有dom
+                    updateKeyDataToView(this.data);
+                }
+                updateKeyDataToView(this.data);
+
+                ///////////////////////////////////////////////////////////////////////
+
+                function isObject(object){//判断是否是原始对象
+                    if(object instanceof Object){
+                        if(object.toString()==="[object Object]")return true;
+                    }
+                    return false;
+                }
+                function updateKeyDataToView(object){
+                    var keys=Object.keys(object);
+                    for(var a=0;a<keys.length;a++){
+                        if(object.hasOwnProperty(keys[a])){//避免沿着原型链查找
+                            if(isObject(object[keys[a]])){//是原始对象，继续遍历
+                                updateKeyDataToView(object[keys[a]]);
+                            }
+                            else{
+                                if(object.bindKeys)setDomData(object.bindKeys[keys[a]],object[keys[a]]);
+                            }
+                        }
+                    }
+                }
+                function mapKey(object){//枚举定义对象所有可列键名（除了对象类型）
+                    var keys=Object.keys(object);
+                    for(var a=0;a<keys.length;a++){
+                        if(object.hasOwnProperty(keys[a])){//避免沿着原型链查找
+                            if(isObject(object[keys[a]])){//是原始对象，继续遍历
+                                mapKey(object[keys[a]]);
+                            }
+                            else{//不是，则重新定义set和get
+                                defineKey(object,keys[a]);
+                            }
+                        }
+                    }
+                }
+                function mapKeyNode(object){//枚举定义对象所有子对象
+                    var keys=Object.keys(object);
+                    for(var a=0;a<keys.length;a++){
+                        if(object.hasOwnProperty(keys[a])){//避免沿着原型链查找
+                            if(isObject(object[keys[a]])){//是原始对象，继续遍历
+                                //为对象注册事件
+                                defineKeyNode(object,keys[a]);
+                                mapKeyNode(object[keys[a]]);
+                            }
+                        }
+                    }
+                }
+                function defineKeyNode(objectNode,key,funcGet,funcSet){
+                    if(!objectNode[key].observerEvent){//只给未定义的定义
+                        objectNode[key].observerEvent={
+                            set:function(object,key_,value,old){
+                                //向上个对象传递
+                                if(objectNode.observerEvent && objectNode.observerEvent.set){
+                                    objectNode.observerEvent.set(object,key_,value,old);
+                                }
+                            },
+                            get:function(object,key_,value){
+                                //向上个对象传递
+                                if(objectNode.observerEvent && objectNode.observerEvent.get){
+                                    objectNode.observerEvent.get(object,key_,value);
+                                }
+                            }
+                        };
+                        Object.defineProperty(objectNode[key],"observerEvent",{//防止被枚举
+                            enumerable:false
+                        });
+                    }
+                }
+                function defineKey(object,key,funcGet,funcSet){
+                    var value=object[key];
+                    Object.defineProperty(object,key,{
+                        set:function(newValue){
+                            if (newValue === value) return;
+                            var old=value;
+                            value = newValue;
+                            if(object.bindKeys)setDomData(object.bindKeys[key],value);//更新view
+                            if(funcSet){
+                                funcSet(object,key,value,old);
+                            }
+                            else{//默认情况
+                                console.log("你设置了‘"+key+"'，旧值为 "+old+" ，新值为 "+value);
+                            }
+                            //向上传递
+                            if(object.observerEvent && object.observerEvent.set){
+                                object.observerEvent.set(object,key,value,old);
+                            }
+                        },
+                        get:function(){
+                            if(funcGet){
+                                funcGet(object,key,value);
+                            }
+                            else{//默认情况
+                                console.log("你访问了 ’"+key+"'，值为 "+value);
+                            }
+                            //向上传递
+                            if(object.observerEvent && object.observerEvent.get){
+                                object.observerEvent.get(object,key,value);
+                            }
+                            return value;
+                        }
+                    });
+                }
+                
+                function mapDomNode(rootObject,rootNode){//遍历寻找使用对象变量的节点
+                    for(var a=0;a<rootNode.childNodes.length;a++){
+                        var node=rootNode.childNodes[a];
+                        if(node.childNodes.length>0){
+                            mapDomNode(rootObject,node);
+                        }
+                        else{
+                            findBindKey(rootObject,node);
+                        }
+                    }
+                }
+                function findBindKey(rootObject,dom){//在当前节点寻找是否有使用对象变量
+                    var keys=dom.textContent.match(/\{\{([\S][^\{\}, ]*)\}\}/g);
+                    if(!keys)return;
+                    for(var a=0;a<keys.length;a++){
+                        var keyname=keys[a].substr(2,keys[a].length-4);
+                        bindNodeToKey(rootObject,keyname,dom);
+                    }
+                }
+                function bindNodeToKey(rootObject,keyname,dom){//绑定节点和模板到变量所属对象
+                        try{
+                            var keys =keyname.split(".");
+                            if(keys.length==0)return;
+                            var lastKey=keys[keys.length-1];
+                            var currentObject=rootObject;
+                            for(var a=0;a<keys.length-1;a++){
+                                currentObject=currentObject[keys[a]];
+                                if(currentObject==undefined)return;
+                            }
+                            if(currentObject.bindKeys==undefined)currentObject.bindKeys={};
+                            currentObject.bindKeys[lastKey]={
+                                keyname:keyname,
+                                dom:dom,
+                                template:dom.textContent,
+                            };
+                            forbidKey(currentObject,"bindKeys");
+                        }
+                        catch(e){
+                            console.log(e.message);
+                        }
+                    
+                }
+                function forbidKey(object,key){
+                    Object.defineProperty(object,key,{//防止被枚举
+                        enumerable:false
+                    });
+                }
+                function setDomData(bindKey,value){//通过模板更新DOM
+                    if(bindKey==undefined)return;
+                    bindKey.dom.textContent=bindKey.template.replace("{{"+bindKey.keyname+"}}",value.toString());
+                }
+            }
+            var app1 = new Vue({
+                 user: {
+                     name: 'youngwind',
+                     age: 25
+                 },
+                 school: 'bupt',
+                 major: 'computer',
+            },document.getElementById("app"));
+            document.getElementById("changeName").onclick=function(){
+                app1.data.user.name="zhangshirong";
+            }
+            document.getElementById("changeAge").onclick=function(){
+                app1.data.user.age=21;
+            }
+            document.getElementById("changeSchool").onclick=function(){
+                app1.data.school="XTU";
+            }
+            document.getElementById("changeMajor").onclick=function(){
+                app1.data.major="Math";
+            }
+            document.getElementById("update").onclick=function(){
+                app1.updateView();
+            }
+        </script>
+    </body>
+
+</html>

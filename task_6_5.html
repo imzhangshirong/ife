@@ -6,9 +6,9 @@
     </head>
     <body>
         <div id="app">
-            <p>姓名：{{name.lastName}}</p>
-            <p>年龄：{{age}}</p>
-            <p>昵称：<span>{{name.nickName.nickLastName}}</span>&nbsp;&nbsp;<span>{{name.nickName.nickFirstName}}</span></p>
+            <p>姓名：{{user.name.lastName}}</p>
+            <p>年龄：{{user.age}}</p>
+            <p>昵称：<span>{{user.name.nickName.nickLastName}}</span>&nbsp;&nbsp;<span>{{user.name.nickName.nickFirstName}}</span></p>
         </div>
         <script>
             function Vue(obj,bindElement){//obj数据对象，父元素绑定
@@ -194,23 +194,25 @@
                 }
             }
             var app1 = new Vue({
-                name: {
-                    lastName: 'zhang',
-                    firstName: 'shirong',
-                    nickName:{
-                        nickLastName: 'da',
-                        nickFirstName: 'gege',
-                    }
+                user:{
+                    name: {
+                        lastName: 'zhang',
+                        firstName: 'shirong',
+                        nickName:{
+                            nickLastName: 'da',
+                            nickFirstName: 'gege',
+                        }
+                    },
+                    age: 25
                 },
-                age: 25
             },document.getElementById("app"));
-            app1.$watch('name',null, function (object,key,value,old) {
+            app1.$watch('user',null, function (object,key,value,old) {
                 console.log("我的姓名发生了变化，可能是姓氏变了，也可能是名字变了。但是我可以告诉你是 "+key+" 由 "+old+" 变成了 "+value);
             },true);
             console.log("一层传递");
-            app1.data.name.firstName='kailong';
+            app1.data.user.name.firstName='kailong';
             console.log("多层传递");
-            app1.data.name.nickName.nickFirstName='hehe';
+            app1.data.user.name.nickName.nickFirstName='hehe';
         </script>
     </body>
 

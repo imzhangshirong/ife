@@ -7,6 +7,9 @@
 </head>
 
 <body>
+    <h3>百位对应的花色：0=>方块，1=>梅花，2=>红桃，3=>黑桃</h3>
+    <h3>后2位对应牌面，1-13 => A-K</h3>
+    <h3>例如：103 => 梅花3</h3>
     <script type="text/javascript">
     function THP(){
         var POKER_CHARS = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];//扑克字符
@@ -94,7 +97,9 @@
                 else{//可能为皇家同花顺
                     var temp=facesNumDis.concat();
                     temp.shift();//删除第一个
-                    if(temp.every(function(item){return item==1;}) && pokersScore[1]==POKER_SCORE[9] && pokersScore[0]==POKER_SCORE[0]){
+                    if(temp.every(fu
+            }
+            //三条nction(item){return item==1;}) && pokersScore[1]==POKER_SCORE[9] && pokersScore[0]==POKER_SCORE[0]){
                         return 90000;//皇家同花顺
                     }
                 }

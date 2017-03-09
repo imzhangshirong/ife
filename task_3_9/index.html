@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 3_9</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    function THP(){
+        var POKER_CHARS = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];//扑克字符
+        var POKER_SCORE = [1,2,3,4,5,6,7,8,9,10,11,12,13]//扑克牌点
+        //定义不同的牌
+        var POKER_FACE  = POKER_SCORE.concat();
+        for(var a=1;a<4;a++){
+            POKER_FACE.concat(POKER_SCORE.map(function(item){
+                return 100*a + item;
+            }));
+        }
+        this.getPokerName = function(pokerFace){
+            var color="";
+            var colorNum=Math.floor(pokerFace/100);
+            var faceNum=pokerFace%100;
+            switch(colorNum){
+                case 0:
+                    color="方块";
+                    break;
+                case 1:
+                    color="梅花";
+                    break;
+                case 2:
+                    color="红桃";
+                    break;
+                case 3:
+                    color="黑桃";
+                    break;
+            }
+            return color+POKER_CHARS[faceNum-1];
+        };
+        this.getPokersType=function(pokersScore){
+            var typeNum=Math.floor(pokersScore/10000);
+            switch(typeNum){
+                case 0:
+                    return "单牌"
+                case 1:
+                    return "一对"
+                case 2:
+                    return "两对"
+                case 3:
+                    return "三条"
+                case 4:
+                    return "顺子"
+                case 5:
+                    return "同花"
+                case 6:
+                    return "葫芦"
+                case 7:
+                    return "四条"
+                case 8:
+                    return "同花顺"
+                case 9:
+                    return "皇家同花顺"
+            }
+        };
+        this.getPokersScore=function(pokersFace){
+            var pokers=pokersFace.sort(function(a,b){return a-b;});//排顺序方便比较
+            var pokersColor=pokers.map(function(item){return Math.floor(item/100)});//获取花色
+            var pokersScore=pokers.map(function(item){return item%100}).sort(function(a,b){return a-b;});//获取牌点
+            var colors=[];
+            var facesNum=[];
+            var facesNumDis=[];
+            
+            for(var a=0;a<pokers.length;a++){
+                if(!colors[pokersColor[a]])colors[pokersColor[a]]=0;
+                if(!facesNum[pokersScore[a]-1])facesNum[pokersScore[a]-1]=0;
+                colors[pokersColor[a]]++;
+                facesNum[pokersScore[a]-1]++;//牌点和牌面数字有联系
+                if(a<pokers.length-1){
+                    facesNumDis.push(pokersScore[a+1]-pokersScore[a]);//计算2个之间的差
+                }
+            }
+            //接下来分10个等级从大到小，皇家9，同花顺8，四条7，葫芦6，同花5，顺子4，三条3，两对2，一对1，单牌0,规定同一等级牌点不大于10000，所以得分加上10000*等级
+            var isStraight=false;
+            var isSuited=false;
+            //是否顺子
+            if(facesNumDis.every(function(item){return item==1;}))isStraight=true;
+            //是否同花
+            if(colors.some(function(item){return item==5;}))isSuited=true;
+            if(isSuited){
+                if(isStraight){//是否顺子
+                    return pokersScore.reduce(function(a,b){return a+b;})+80000;//同花顺
+                }
+                else{//可能为皇家同花顺
+                    var temp=facesNumDis.concat();
+                    temp.shift();//删除第一个
+                    if(temp.every(function(item){return item==1;}) && pokersScore[1]==POKER_SCORE[9] && pokersScore[0]==POKER_SCORE[0]){
+                        return 90000;//皇家同花顺
+                    }
+                }
+            }
+            //四条
+            if(facesNum.some(function(item){return item==4})){//存在4个面值相同
+                var max=0;
+                if(facesNumDis[0]==0){//前4张相同
+                    max=(pokersScore[0]==1)?14:pokersScore[0];//4个A最大
+                    return max*100+pokersScore.pop()+70000;
+                }
+                else{//后4张相同
+                    max=pokersScore.pop();
+                    return max*100+pokersScore.shift()+70000;
+                }
+            }
+            //葫芦（三带一对）
+            if(facesNum.some(function(item){return item==3})){//存在3个面值相同
+                var max=0;
+                if(facesNumDis[2]>0 && facesNumDis[3]==0){//前3张相同，后2张一对
+                    max=(pokersScore[0]==1)?14:pokersScore[0];//3个A最大
+                    return max*100+pokersScore.pop()+pokersScore.pop()+60000;
+                }
+                else if(facesNumDis[1]>0 && facesNumDis[0]==0){//后3张相同，前2张一对
+                    max=pokersScore.pop();
+                    return max*100+pokersScore.shift()+pokersScore.shift()+60000;
+                }
+            }
+            //同花
+            if(isSuited){
+                return pokersScore.reduce(function(a,b){return a+b;})+50000;
+            }
+            //顺子
+            if(isStraight){
+                return pokersScore.pop()*100+40000;
+            }
+            else{
+                var temp=facesNumDis.concat();
+                temp.shift();//删除第一个
+                if(temp.every(function(item){return item==1;}) && pokersScore[1]==POKER_SCORE[9] && pokersScore[0]==POKER_SCORE[0]){
+                    return 14*100+40000;//AKQJ10
+                }
+            }
+            //三条
+            if(facesNum.some(function(item){return item==3})){//存在3个面值相同
+                var max=0;
+                if(facesNumDis[0]==0){//前3张相同
+                    max=(pokersScore[0]==1)?14:pokersScore[0];//3个A最大
+                    return max*100+pokersScore.pop()+pokersScore.pop()+30000;
+                }
+                else{//后3张相同
+                    max=pokersScore.pop();
+                    return max*100+pokersScore.shift()+pokersScore.shift()+30000;
+                }
+            }
+            //两对
+            if(facesNumDis[0]+facesNumDis[2]==0){//两对在前面
+                if(pokersScore[0]==POKER_SCORE[0])pokersScore[0]=14;//A大
+                return (pokersScore[0]+pokersScore[2])*100+pokersScore.pop()+20000;
+            }
+            else if(facesNumDis[1]+facesNumDis[3]==0){//两对在后面
+                var single=pokersScore.shift();
+                if(single==POKER_SCORE[0])single=14;//A大
+                return (pokersScore[1]+pokersScore[3])*100+single+20000;
+            }
+            else if(facesNumDis[0]+facesNumDis[3]==0){//两对一前一后
+                if(pokersScore[0]==POKER_SCORE[0])pokersScore[0]=14;//A大
+                return (pokersScore[0]+pokersScore[3])*100+pokersScore.pop()+20000;
+            }
+            //一对
+            var dp=0;
+            for(dp=0;dp<facesNumDis.length;dp++){
+                if(facesNumDis[dp]==0)break;
+            }
+            if(dp<facesNumDis.length){
+                var double=pokersScore[dp];
+                if(double==POKER_SCORE[0])double=14;
+                pokersScore.splice(dp,2);
+                return double*100+pokersScore.reduce(function(a,b){return a+b;})+10000;
+            }
+            //单牌
+            return pokersScore.reduce(function(a,b){return a+b;});
+        };
+
+
+    }
+    console.log("通过比较牌分可以比较每副牌的大小");
+    var THPoker=new THP();
+    var pokersFaces=[
+            [101,201,13,301,10],
+            [1,10,111,212,13],
+            [13,9,10,11,12],
+            [113,101,110,111,112],
+            [113,10,110,212,112],
+            [101,1,110,212,112],
+            [101,3,103,302,202],
+            [101,2,103,307,209],
+            [101,102,103,107,109],
+            [201,101,1,301,305],
+            [213,113,13,313,305],
+            [10,110,210,313,13],
+            [11,111,211,213,13],
+            [10,110,209,313,12],
+            [11,111,209,213,12],
+        ];
+    for(var a=0;a<pokersFaces.length;a++){
+        var pokersFace=pokersFaces[a];
+        var score=THPoker.getPokersScore(pokersFace);
+        console.log(pokersFace+"\n"+pokersFace.map(function(item){return THPoker.getPokerName(item)})+"\n类型："+THPoker.getPokersType(score)+"\n牌分："+score);
+    }
+    
+    </script>
+</body>
+
+</html>

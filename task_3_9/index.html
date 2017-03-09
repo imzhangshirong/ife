@@ -97,9 +97,7 @@
                 else{//可能为皇家同花顺
                     var temp=facesNumDis.concat();
                     temp.shift();//删除第一个
-                    if(temp.every(fu
-            }
-            //三条nction(item){return item==1;}) && pokersScore[1]==POKER_SCORE[9] && pokersScore[0]==POKER_SCORE[0]){
+                    if(temp.every(function(item){return item==1;}) && pokersScore[1]==POKER_SCORE[9] && pokersScore[0]==POKER_SCORE[0]){
                         return 90000;//皇家同花顺
                     }
                 }

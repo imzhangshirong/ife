@@ -44,15 +44,27 @@
             };
             //接下来分10个等级从大到小，皇家9，同花顺8，四条7，葫芦6，同花5，顺子4，三条3，两对2，一对1，单牌0,规定同一等级牌点不大于10000，所以得分加上10000*等级
 
-            function _getStraight(pokers, pokersScore, facesNumDis) {//获取符合顺子的数组
+            function _getStraight(pokersData, facesNumDisData) {//获取符合顺子的数组
+                var pokers = pokersData.concat();
+                var facesNumDis = facesNumDisData.concat();
                 var newPokers = [];
                 var cut = false;
                 var positionA = -1;
                 var a = 0;
+                if (pokers[0] % 100 == 1) positionA = 0;
+
+                if (positionA > -1 && pokers[pokers.length - 1] % 100 == 13) {
+                    pokers.push(pokers[positionA]);
+                    facesNumDis.push(1);
+                }
                 for (a = 0; a < facesNumDis.length; a++) {
                     if (facesNumDis[a] <= 1) {
                         if (newPokers.length == 0) {
                             cut = false;
+                        }
+                        if (cut && newPokers.length < 5) {
+                            cut = false;
+                            newPokers = [];
                         }
                         if (!cut) {
                             newPokers.push(pokers[a]);
@@ -62,14 +74,9 @@
                         cut = true;
                         newPokers.push(pokers[a]);
                     }
-                    if (pokersScore[a] == POKER_SCORE[0]) positionA = a;
                 }
-                if (pokersScore[a] == POKER_SCORE[0]) positionA = a;
                 if (!cut && newPokers.length > 0) {
                     newPokers.push(pokers[a]);
-                }
-                if (positionA > -1 && newPokers[0] % 100 == 10) {
-                    newPokers.unshift(pokers[positionA]);
                 }
                 var sames = [];
                 var point = [-1, -1];
@@ -117,8 +124,8 @@
                 }
                 return possible.filter(function (item) { return item.length > 4; });
             }
-            function getStraight(pokers, pokersScore, facesNumDis) {//获取顺子
-                var pokersArray = _getStraight(pokers, pokersScore, facesNumDis);
+            function getStraight(straightArray) {//获取顺子
+                var pokersArray = straightArray;
                 var pokersObj, score;
                 if (pokersArray) {
                     for (var a = 0; a < pokersArray.length; a++) {
@@ -136,21 +143,20 @@
                 }
                 return pokersObj;
             }
-            function getStraightFlush(pokers, pokersScore, facesNumDis) {//获取同花顺
-                var pokersArray = _getStraight(pokers, pokersScore, facesNumDis);
+            function getStraightFlush(straightArray) {//获取同花顺
+                var pokersArray = straightArray;
                 var pokersObj, score, pokersStraight;
                 for (var c = 0; c < pokersArray.length; c++) {
                     pokersStraight = pokersArray[c];
                     for (var a = 0; a < pokersStraight.length - 4; a++) {
                         var tempPokers = pokersStraight.slice(a, a + 5);
+                        //判断是否同花
                         var isFlush = false;
-                        for (var b = 0; b < 4; b++) {
-                            var l = b * 100;
-                            var r = (b + 1) * 100;
-                            if (tempPokers.every(function (item) {
-                                return l < item && item < r;
-                            })) isFlush = true;
-                        }
+                        var l = tempPokers[0] - tempPokers[0] % 100;
+                        var r = l + 100;
+                        if (tempPokers.every(function (item) {
+                            return l < item && item < r;
+                        })) isFlush = true;
                         if (isFlush) {
                             if (!pokersObj) pokersObj = {
                                 "type": "同花顺",
@@ -163,6 +169,10 @@
                             }
                         }
                     }
+                }
+                if (pokersObj && pokersObj.pokers[0] % 100 == 10) {//皇家同花顺
+                    pokersObj.type = "皇家同花顺";
+                    pokersObj.score = 90000;
                 }
 
                 return pokersObj;
@@ -205,7 +215,7 @@
                 for (var a = 0; a < sames.length; a++) {
                     if (sames[a].length >= 4) {
                         var tempQuad = sames[a];
-                        var scoreBase = tempQuad[0] % 100 + 70000;
+                        var scoreBase = POKER_SCORE[tempQuad[0] % 100 - 1] + 70000;
                         for (var b = 0; b < beSingles.length; b++) {
                             if (a == b) continue;
                             if (!pokersObj) pokersObj = {
@@ -276,18 +286,19 @@
                 beDoubles = threes.concat(doubles);
                 for (var a = 0; a < threes.length; a++) {
                     var three = threes[a];
-                    for (var b = 0; b < beDoubles.length; b++) {
-                        var double = beDoubles[b];
-                        if (double[0] % 100 == three[0] % 100) continue;
-                        if (!pokersObj) pokersObj = {
-                            "type": "葫芦",
-                            "score": 0,
-                        };
-                        score = POKER_SCORE[three[0] % 100 - 1] * 100 + POKER_SCORE[double[0] % 100 - 1] + 60000;
-                        if (pokersObj.score < score) {
-                            pokersObj.score = score;
-                            pokersObj.pokers = three.slice(-3).concat(double.slice(-2));
-                        }
+                    var pokers = beDoubles.concat();
+                    pokers.splice(a, 1);
+                    pokers = pokers.sort(function (a, b) { return POKER_SCORE[a[0] % 100 - 1] - POKER_SCORE[b[0] % 100 - 1]; });
+                    if (pokers.length < 1) continue;
+                    pokers = pokers.slice(-1);
+                    if (!pokersObj) pokersObj = {
+                        "type": "葫芦",
+                        "score": 0,
+                    };
+                    score = POKER_SCORE[three[0] % 100 - 1] * 100 + POKER_SCORE[pokers[0][0] % 100 - 1] + 60000;
+                    if (pokersObj.score < score) {
+                        pokersObj.score = score;
+                        pokersObj.pokers = three.slice(-3).concat(pokers[0]);
                     }
                 }
                 return pokersObj;
@@ -311,24 +322,19 @@
                 beSingles = threes.concat(doubles.concat(singles.map(function (item) { return [item]; })));
                 for (var a = 0; a < threes.length; a++) {
                     var three = threes[a];
-                    for (var b = 0; b < beSingles.length; b++) {
-                        var single1 = beSingles[b];
-                        if (single1[0] % 100 == three[0] % 100) continue;
-                        for (var c = 0; c < beSingles.length; c++) {
-                            if (b == c) continue;
-                            var single2 = beSingles[c];
-                            if (single2[0] % 100 == three[0] % 100) continue;
-                            if (!pokersObj) pokersObj = {
-                                "type": "三条",
-                                "score": 0,
-                            };
-                            score = POKER_SCORE[three[0] % 100 - 1] * 100 + POKER_SCORE[single1[0] % 100 - 1] + POKER_SCORE[single2[0] % 100 - 1] + 30000;
-                            if (pokersObj.score < score) {
-                                pokersObj.score = score;
-                                pokersObj.pokers = three.slice(-3).concat([single1[0], single2[0]]);
-                            }
-                        }
-
+                    var pokers = beSingles.map(function (item) { return item[0]; });
+                    pokers.splice(a, 1);
+                    pokers = pokers.sort(function (a, b) { return POKER_SCORE[a % 100 - 1] - POKER_SCORE[b % 100 - 1]; });
+                    if (pokers.length < 2) continue;
+                    pokers = pokers.slice(-2);
+                    if (!pokersObj) pokersObj = {
+                        "type": "三条",
+                        "score": 0,
+                    };
+                    score = POKER_SCORE[three[0] % 100 - 1] * 100 + getPokersScore(pokers).reduce(function (a, b) { return a + b; }) + 30000;
+                    if (pokersObj.score < score) {
+                        pokersObj.score = score;
+                        pokersObj.pokers = three.slice(-3).concat(pokers);
                     }
                 }
                 return pokersObj;
@@ -344,26 +350,31 @@
                         doubles.push(sames[a]);
                     }
                 }
-                beSingles = doubles.concat(singles.map(function (item) { return [item]; }));
                 for (var a = 0; a < doubles.length; a++) {
                     var double1 = doubles[a];
                     for (var b = 0; b < doubles.length; b++) {
                         if (a == b) continue;
                         var double2 = doubles[b];
-                        for (var c = 0; c < beSingles.length; c++) {
-                            var single = beSingles[c];
-                            if (single[0] % 100 == double1[0] % 100 || single[0] % 100 == double2[0] % 100) continue;
-                            if (!pokersObj) pokersObj = {
-                                "type": "两对",
-                                "score": 0,
-                            };
-                            score = POKER_SCORE[double1[0] % 100 - 1] * 100 + POKER_SCORE[double2[0] % 100 - 1] + POKER_SCORE[single[0] % 100 - 1] + 20000;
-                            if (pokersObj.score < score) {
-                                pokersObj.score = score;
-                                pokersObj.pokers = double1.slice(-2).concat(double2.slice(-2)).concat(single[0]);
-                            }
+                        beSingles = doubles.map(function (item) { return item[0] }).concat(singles);
+                        beSingles.splice(a, 1);//删除已有的2对，剩下的都可以单牌
+                        beSingles.splice(b, 1);
+                        var pokers = beSingles.sort(function (a, b) { return POKER_SCORE[a % 100 - 1] - POKER_SCORE[b % 100 - 1]; });
+                        if (pokers.length < 1) continue;
+                        pokers = pokers.slice(-1);
+                        if (!pokersObj) pokersObj = {
+                            "type": "两对",
+                            "score": 0,
+                        };
+                        var max = double1, min = double2;
+                        if (POKER_SCORE[double1[0] % 100 - 1] < POKER_SCORE[double2[0] % 100 - 1]) {
+                            max = double2;
+                            min = double1;
                         }
-
+                        score = POKER_SCORE[max[0] % 100 - 1] * 100 + POKER_SCORE[min[0] % 100 - 1] * 10 + getPokersScore(pokers).reduce(function (a, b) { return a + b; }) + 20000;
+                        if (pokersObj.score < score) {
+                            pokersObj.score = score;
+                            pokersObj.pokers = max.slice(-2).concat(min.slice(-2)).concat(pokers);
+                        }
                     }
                 }
                 return pokersObj;
@@ -372,46 +383,37 @@
                 var sames = sameAndSingleObj.sames;
                 var singles = sameAndSingleObj.singles;
                 var doubles = [];
-                var pokersObj;
+                var pokersObj, score;
                 var beSingles = [];
                 for (var a = 0; a < sames.length; a++) {
                     if (sames[a].length >= 2) {
                         doubles.push(sames[a]);
                     }
                 }
-                beSingles = doubles.concat(singles.map(function (item) { return [item]; }));
+                beSingles = doubles.map(function (item) { return item[0] }).concat(singles);
                 for (var a = 0; a < doubles.length; a++) {
                     var double = doubles[a];
-                    for (var b = 0; b < beSingles.length; b++) {
-                        var single1 = beSingles[b];
-                        if (single1[0] % 100 == double[0] % 100) continue;
-                        for (var c = 0; c < beSingles.length; c++) {
-                            if (b == c) continue;
-                            var single2 = beSingles[c];
-                            if (single2[0] % 100 == double[0] % 100) continue;
-                            for (var d = 0; d < beSingles.length; d++) {
-                                if (c == d || d == b) continue;
-                                var single3 = beSingles[d];
-                                if (single3[0] % 100 == double[0] % 100) continue;
-                                if (!pokersObj) pokersObj = {
-                                    "type": "一对",
-                                    "score": 0,
-                                };
-                                score = POKER_SCORE[double[0] % 100 - 1] * 100 + POKER_SCORE[single1[0] % 100 - 1] + POKER_SCORE[single2[0] % 100 - 1] + POKER_SCORE[single3[0] % 100 - 1] + 10000;
-                                if (pokersObj.score < score) {
-                                    pokersObj.score = score;
-                                    pokersObj.pokers = double.slice(-2).concat([single1[0], single2[0], single3[0]]);
-                                }
-                            }
-                        }
+                    var pokers = beSingles.concat();
+                    pokers.splice(a, 1);
+                    pokers = pokers.sort(function (a, b) { return POKER_SCORE[a % 100 - 1] - POKER_SCORE[b % 100 - 1]; });
+                    if (pokers.length < 3) continue;
+                    pokers = pokers.slice(-3);
+                    if (!pokersObj) pokersObj = {
+                        "type": "一对",
+                        "score": 0,
+                    };
+                    score = POKER_SCORE[double[0] % 100 - 1] * 100 + getPokersScore(pokers).reduce(function (a, b) { return a + b; }) + 10000;
+                    if (pokersObj.score < score) {
+                        pokersObj.score = score;
+                        pokersObj.pokers = double.concat(pokers);
                     }
                 }
                 return pokersObj;
             }
             function getHighCard(sameAndSingleObj) {//单牌
                 var sames = sameAndSingleObj.sames;
-                var singles = sames.concat(sameAndSingleObj.singles.map(function (item) { return [item]; }));
-                singles = singles.map(function (item) { return item[0] }).sort(function (a, b) { return a % 100 - b % 100; });
+                var singles = sames.map(function (item) { return item[0] }).concat(sameAndSingleObj.singles);
+                singles = singles.sort(function (a, b) { return POKER_SCORE[a % 100 - 1] - POKER_SCORE[b % 100 - 1]; });
                 var pokersObj;
                 if (singles.length > 4) {
                     var pokers = singles.slice(-5);
@@ -447,23 +449,13 @@
                     }
                 }
                 var sameAndSingleObj = _getSameAndSingle(pokers, facesNumDis);
+                var straightArray = _getStraight(pokers, facesNumDis);
                 var scores = [];
-                var temp = getStraightFlush(pokers, pokersScore, facesNumDis);
-                if (temp && temp.pokers[0] % 100 == 1 && temp.pokers[temp.pokers.length - 1] % 100 == 13) {
-                    scores.push({
-                        "type": "皇家同花顺",
-                        "score": 90000,
-                        "pokers": temp.pokers.concat()
-                    });
-                }
-                else {
-                    scores.push(undefined);
-                }
-                scores.push(temp);
+                scores.push(getStraightFlush(straightArray));
                 scores.push(getQuad(sameAndSingleObj));
                 scores.push(getFullHouse(sameAndSingleObj));
                 scores.push(getFlush(pokers, colors));
-                scores.push(getStraight(pokers, pokersScore, facesNumDis));
+                scores.push(getStraight(straightArray));
                 scores.push(getSet(sameAndSingleObj));
                 scores.push(getTwoPair(sameAndSingleObj));
                 scores.push(getPair(sameAndSingleObj));
@@ -483,6 +475,8 @@
             [301, 302, 303, 304, 306, 205],
             [301, 302, 303, 304, 306, 205, 305],
             [1, 101, 201, 2, 102, 202, 302],
+            [1, 102, 203, 4, 105, 12, 13],
+            [1, 102, 203, 210, 11, 12, 13],
             [207, 101, 203, 1, 309, 8, 301],
             [1, 10, 111, 212, 13,],
             [13, 9, 10, 11, 12],
@@ -494,10 +488,10 @@
             [101, 102, 103, 107, 109],
             [201, 101, 1, 301, 305],
             [213, 113, 13, 313, 305],
-            [10, 110, 210, 313, 13],
+            [10, 110, 210, 313, 13, 12, 11],
             [11, 111, 211, 213, 13],
             [10, 110, 209, 313, 12],
-            [11, 111, 209, 213, 12],
+            [11, 111, 209, 213, 1, 2],
         ];
         for (var a = 0; a < pokersFaces.length; a++) {
             var pokersFace = pokersFaces[a];
